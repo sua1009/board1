@@ -6,4 +6,5 @@ import board.dto.BoardDto;
 
 public interface BoardService {
 	List<BoardDto> selectBoardList() throws Exception;
+	BoardDto selectBoardDetail(int boardIdx) throws Exception;
 }

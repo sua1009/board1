@@ -6,7 +6,13 @@ import org.apache.ibatis.annotations.Mapper;
 
 import board.dto.BoardDto;
 
+// DAO 로 동작함
 @Mapper
 public interface BoardMapper {
+//	게시물 목록 불러오기
    List<BoardDto> selectBoardList() throws Exception;
+//  지정한 게시물 전체 내용 불러오기
+   BoardDto selectBoardDetail(int boardIdx) throws Exception;
+//   지정한 게시물의 hit Count 올리기
+   void updateHitCount (int boardIdx) throws Exception;
 }

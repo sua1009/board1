@@ -46,4 +46,40 @@
 				WHERE board_idx = #{boardIdx}
 		]]>
 	</update>
+	
+	<!-- xml에서 sql 쿼리문을 입력 시 반드시 실제 데이터베이스의 컬럼명을 사용 -->
+	<!-- 사용자 정보가 입력되는 부분은 dto 클래스에서 선언한 멤버변수명을 사용  -->
+	<!-- Mapper 파일에서 매개변수로 넘어온 매개변수명을 사용해야 함  -->
+	<insert id="insertBoard" parameterType="board.dto.BoardDto">
+		<![CDATA[
+			INSERT INTO t_board
+				(title, contents, created_datetime, created_id) 
+			VALUES 
+				(#{title}, #{contents}, NOW() , #{createdId})
+		]]>
+	</insert>
+	
+	<update id="updateBoard" parameterType="board.dto.BoardDto">
+		<![CDATA[
+			UPDATE t_board SET 
+				title = #{title}, 
+				contents = #{contents}
+			WHERE board_idx= #{boardIdx}			
+		]]>
+	</update>
+		
+	<delete id="deleteBoard" parameterType="int">
+		<![CDATA[
+			DELETE FROM 
+				t_board 
+			WHERE 
+				board_idx = #{boardIdx} 
+		]]>
+	</delete>
 </mapper>
+
+
+
+
+
+

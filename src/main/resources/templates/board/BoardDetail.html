@@ -6,9 +6,36 @@
 
 <link rel="stylesheet" th:href="@{/css/bootstrap.css}"></link>
 
-<script th:src="@{/js/query-3.5.1.js}"></script>
+<script th:src="@{/js/jquery-3.5.1.js}"></script>
 <script th:src="@{/js/popper.min.js}"></script>
 <script th:src="@{/js/bootstrap.js}"></script>
+
+<script>
+	$(document).ready(function(){
+		/* 목록으로 버튼 클릭 시 목록으로 이동 */
+		$("#btnList").on("click", function(){
+			/* 자바스크립트의 loaction을 사용하여 페이지 이동 */
+			location.href="openBoardList.do";
+		});
+		
+		/* 수정하기 버튼 클릭 시 Controller의 updateBaord.do로 이동 */
+		$("#btnEdit").on("click", function(){
+			/* html 태그의 form 태그를 호출하여 action 속성의 값을 변경하고 서버로 데이터 전송 */
+			var frm = $("#frm")[0];
+			frm.action = "updateBoard.do";
+			frm.submit();
+		});
+		
+		/* 삭제하기의 버튼 클릭시 Controller의 deleteBaord.do로 이동 */
+		$("#btnDel").on("click", function(){
+			/* html 태그의 form 태그를 호출하여 action 속성의 값을 변경하고 서버로 데이터 전송 */
+			var frm = $("#frm")[0];
+			frm.action = "deleteBoard.do";
+			frm.submit();
+		});
+	});
+</script>
+
 </head>
 
 <body>
@@ -16,8 +43,9 @@
 		<div class="jumbotron">
 			<h2>게시글 상세보기</h2>
 		</div>
-		<table class="table table-dark">
-			<tbody>
+		<form id="frm" method="POST">		
+			<table class="table table-dark">
+				<tbody>
 				<tr>
 					<td>글 번호</td>
 					<td th:text="${board.boardIdx}"></td>
@@ -32,16 +60,23 @@
 				</tr>
 				<tr>
 					<td>제목</td>
-					<td colspan="1">
+					<td colspan="3">
 						<input type="text" id="title" name="title" th:value="${board.title}" class="form-control w-100">
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2">
-						<textarea title="내용" id="contents" name="contents" th:text="${board.contents}"class="form-control w-100"></textarea>
+					<td colspan="4">
+						<textarea title="내용" id="contents" name="contents" rows="8" th:text="${board.contents}"class="form-control w-100"></textarea>
 				</tr>
-			</tbody>
-		</table>	
+				</tbody>
+			</table>	
+			<input type="hidden" name="boardIdx" th:value="${board.boardIdx}">
+			<div class="d-flex justify-content-end">
+				<button type="button" id="btnList" class="btn btn-primary">목록으로</button>
+				<button type="button" id="btnEdit" class="btn btn-success ml-2">수정하기</button>
+				<button type="button" id="btnDel" class="btn btn-danger ml-2">삭제하기</button>
+			</div>
+		</form>
 	</div>
 
 

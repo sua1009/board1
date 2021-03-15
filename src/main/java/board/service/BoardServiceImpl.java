@@ -38,14 +38,19 @@ public class BoardServiceImpl implements BoardService {
    public void insertBoard(BoardDto board, MultipartHttpServletRequest files) throws Exception {
 //	   boardMapper.insertBoard(board);
 	   
+//	   업로드한 파일이 존재하는지 여부 확인 
 	   if (ObjectUtils.isEmpty(files) == false) {
+//		   업로드된 파일의 이름 목록을 받아옴
 		   Iterator<String> iterator = files.getFileNames();
 		   String fileName;
 		   
+//		   받아온 이름 목록에서 다음 것이 존재하는지 확인
 		   while(iterator.hasNext()) {
-			   fileName = iterator.next();
+			   fileName = iterator.next(); // 실제 가져옴
+//			   실제 파일을 가져와서 List 타입에 저장
 			   List<MultipartFile> filsList = files.getFiles(fileName);
 			   
+//			   list에 저장된 파일을 하나씩 꺼내어 정보출력
 			   for (MultipartFile file : filsList) {
 				   log.debug("==== start file infomation ====");
 				   log.debug("file name : " + file.getOriginalFilename());

@@ -1,16 +1,23 @@
 package board.service;
 
+import java.util.Iterator;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import board.dto.BoardDto;
 import board.mapper.BoardMapper;
 
 @Service
 public class BoardServiceImpl implements BoardService {
-   
+	private Logger log = LoggerFactory.getLogger(this.getClass());
+	
    @Autowired
    private BoardMapper boardMapper;
    
@@ -28,8 +35,28 @@ public class BoardServiceImpl implements BoardService {
    }
    
    @Override
-   public void insertBoard(BoardDto board) throws Exception {
-	   boardMapper.insertBoard(board);
+   public void insertBoard(BoardDto board, MultipartHttpServletRequest files) throws Exception {
+//	   boardMapper.insertBoard(board);
+	   
+	   if (ObjectUtils.isEmpty(files) == false) {
+		   Iterator<String> iterator = files.getFileNames();
+		   String fileName;
+		   
+		   while(iterator.hasNext()) {
+			   fileName = iterator.next();
+			   List<MultipartFile> filsList = files.getFiles(fileName);
+			   
+			   for (MultipartFile file : filsList) {
+				   log.debug("==== start file infomation ====");
+				   log.debug("file name : " + file.getOriginalFilename());
+				   
+				   log.debug("file name: " + file.getSize());
+	   				log.debug("file content type	: " + file.getContentType());
+				   log.debug("==== end file information.=====\n");
+				   
+			   }
+		   }
+	   }
    }
    
    @Override

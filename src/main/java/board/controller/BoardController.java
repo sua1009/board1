@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import board.dto.BoardDto;
@@ -69,11 +70,12 @@ public class BoardController{
 	
 //	새 게시글 작성하기
 //	insertBoard 메서드의 매개변수로 BoardDto 클래스 타입의 객체 board를 사용함으로 사용자 입력 데이터를 담당하는 boardWrite.html에서 input 태그의 name 속성을 BaordDto 클래스의 멤버 변수 명으로 지정해야함
+//	파일 업로드 부분으로 인하여 매개변수에 MultipartHttpServletRequest 클래스가 추가됨, MultipartHttpServletRequest는 ServletRequest를 상속받아 구현된 인터페이스로 업로드된 파일을 처리하기 위한 여러가지 메서드를 제공
 	@RequestMapping("/board/insertBoard.do")
-	public String insertBoard(BoardDto board) throws Exception{
+	public String insertBoard(BoardDto board, MultipartHttpServletRequest files) throws Exception{
 //		해당 메서드가 실행 시 boardService의 insertBoard 메서드를 실행하여 데이터베이스에 접근
 //		insert, update, delete문은 반환값이 없어도 상관없기 때문에 sql 쿼리 결과를 받아오는 부분이 없어도 됨		
-		boardService.insertBoard(board);
+		boardService.insertBoard(board, files);
 		
 //		redirect를 통해서 지정한 주소로 화면전환
 		return "redirect:/board/openBoardList.do";

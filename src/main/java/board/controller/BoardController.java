@@ -4,8 +4,8 @@ import java.util.List;
 
 // Logback을 사용하더라도 slf4j 패키지의 의존성을 활용하여 logger를 사용함 
 // 다른 로깅 시스템을 사용하더라도 쉽게 변경이 가능함
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,19 +15,20 @@ import org.springframework.web.servlet.ModelAndView;
 
 import board.dto.BoardDto;
 import board.service.BoardService;
+import lombok.extern.slf4j.Slf4j;
 
 
 //logback 사용하기
 //기존 자바의 로깅 시스템인 log4j 라는 프로젝트가 종료된 후 출범된 로그를 위한 프로젝트
 //로그란? 각종 시스템이 작동하는 내역을 남기는 것을 로그라고 함 
-
-
+// @Slf4j - lombok 을 사용할 경우 @Slf4j 어노테이션을 사용하면 해당 클래스에서 Logger객체를 생성하지 않고 사용이 가능함
+@Slf4j
 @Controller
 public class BoardController{
 //	getLogger() 메서드의 매개변수는 로거의 이름임 
 //	getLogger("name");으로 생성하면 name 이라는 이름을 가진 로거 객체가 생성됨 
 //	일반적으로는 클래스 객체를 사용함/ 패키지이름 + 클래스이름 으로 구성하여 출력
-	private Logger log = LoggerFactory.getLogger(this.getClass());
+//	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
 //	@Autowired : 객체 자동 생성 어노테이션
 	@Autowired

@@ -69,6 +69,13 @@
 						<textarea title="내용" id="contents" name="contents" rows="8" th:text="${board.contents}"class="form-control w-100"></textarea>
 				</tr>
 				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="4">
+							<a th:each="list : ${board.fileList}" th:text="|${list.originalFileName}(${list.fileSize} kb)|"></a>						
+						</td>
+					</tr>
+				</tfoot>
 			</table>	
 			<input type="hidden" name="boardIdx" th:value="${board.boardIdx}">
 			<div class="d-flex justify-content-end">

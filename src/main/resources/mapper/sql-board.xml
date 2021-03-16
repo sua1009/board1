@@ -50,7 +50,9 @@
 	<!-- xml에서 sql 쿼리문을 입력 시 반드시 실제 데이터베이스의 컬럼명을 사용 -->
 	<!-- 사용자 정보가 입력되는 부분은 dto 클래스에서 선언한 멤버변수명을 사용  -->
 	<!-- Mapper 파일에서 매개변수로 넘어온 매개변수명을 사용해야 함  -->
-	<insert id="insertBoard" parameterType="board.dto.BoardDto">
+	<!-- useGeneratedKeys 는 자동증가 옵션으로 생성된 키의 값을 반환하도록 설정 (insert, update에서만 사용)  -->
+	<!-- keyProperty 는 useGeneratedKeys를 사용할 경우 반환값을 변수명 -->
+	<insert id="insertBoard" parameterType="board.dto.BoardDto" useGeneratedKeys = "true" keyProperty="boardIdx">
 		<![CDATA[
 			INSERT INTO t_board
 				(title, contents, created_datetime, created_id) 
@@ -59,6 +61,43 @@
 		]]>
 	</insert>
 	
+	<!-- 파일정보 추가하기 -->
+	<insert id="insertBoardFileList" parameterType = "board.dto.BoardFileDto">
+		<![CDATA[
+		INSERT INTO t_file 
+			(board_idx, original_file_name, stored_file_path, file_size,
+			created_id, created_datetime)
+		VALUES
+		]]>
+		<!-- collection은 mapper 파일에서 넘겨받은 변수명을 사용(데이터 타입은 List, array임) -->
+		<!-- item속성은 foreach 문 내에서 사용할 매개변수의 인자 -->
+		<!-- separator 속성은 반복되는 문자열을 구분하기 위해 사용 -->
+		<foreach collection="list" item="item" separator=",">
+		(
+			#{item.boardIdx}, 
+			#{item.originalFileName}, 
+			#{item.storedFilePath}, 
+			#{item.fileSize}, 
+			'admin',
+			 NOW() 
+		)
+		</foreach>
+	</insert>
+	
+	<!-- 파일 목록 확인하기 -->
+	<select id="selectBoardFileList" parameterType="int" resultType="board.dto.BoardFileDto">
+		<![CDATA[
+			SELECT idx, board_idx, original_file_name, 
+				FORMAT(ROUND(file_size /1024), 0) AS file_size
+			FROM t_file 
+			WHERE board_idx = #{boardIdx}
+			AND deleted_yn = 'N';
+		]]>
+		
+		
+	</select>
+	
+	<!-- 게시글 수정하기 -->
 	<update id="updateBoard" parameterType="board.dto.BoardDto">
 		<![CDATA[
 			UPDATE t_board SET 
